@@ -9,7 +9,7 @@ if __name__ == '__main__':
     submit, result = {}, {}  # 分别是每个作业的调度时间 和 已经统计过的作业，避免重复统计
     boss, medium = {}, {}
     number = 0
-    for i in range(0, 5):
+    for i in range(0, 500):
         task_file = 'G:/实习文件夹/google_trace数据集/task_events/part-00' + str(i).zfill(3) + '-of-00500.csv.gz'
         print(i)
         with gzip.open(task_file, 'r') as f:
