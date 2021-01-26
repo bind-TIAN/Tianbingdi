@@ -1,0 +1,297 @@
+'''
+# 第一步：统计在第一天中，task_event前五个文件中属于每个machine_id的submit/fail个数
+def print_cnt(dic, path):
+    with open(path, 'w') as f:
+        for key in dic:
+            f.write(key + ',' + str(dic[key][0]) + ',' + str(dic[key][1]) + '\n')
+        f.close()
+
+
+if __name__ == '__main__':
+    submit, result = {}, {}
+    with open('F:/谷歌数据/new_1.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            task_id = temp[0] + ',' + temp[1]
+            if task_id not in submit:
+                submit[task_id] = [int(temp[2]), int(temp[3])]
+        f.close()
+    for i in range(0, 5):
+        task_file = 'G:/实习文件夹/google_trace数据集/task_events/part-00' + str(i).zfill(3) + '-of-00500.csv.gz'
+        print(i)
+        with gzip.open(task_file, 'r') as f:
+            for line in f:
+                temp = str(line, encoding='utf-8').replace('\n', '').split(',')
+                task_id = temp[2] + ',' + temp[3]
+                if task_id in submit:
+                    task_id_two = temp[4]
+                    if task_id_two not in result:
+                        result[task_id_two] = [submit[task_id][0], submit[task_id][1]]
+                    else:
+                        result[task_id_two][0] = result[task_id_two][0] + submit[task_id][0]
+                        result[task_id_two][1] = result[task_id_two][1] + submit[task_id][1]
+            f.close()
+    print_cnt(result, 'F:/谷歌数据/machine_submit_fail.txt')'''
+
+'''
+# 第二步：统计在第一天中，task_event前五个文件中属于每个machine_id的ratio of submit/fail
+def print_cnt(dic, path):
+    with open(path, 'w') as f:
+        for key in dic:
+            if dic[key][0] == 0:
+                symbol = 0
+            else:
+                symbol = float(dic[key][1]) / float(dic[key][0])
+            f.write(key + ',' + str(symbol) + '\n')
+        f.close()
+
+
+if __name__ == '__main__':
+    submit, result = {}, {}
+    with open('F:/谷歌数据/new_1.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            task_id = temp[0] + ',' + temp[1]
+            if task_id not in submit:
+                submit[task_id] = [int(temp[2]), int(temp[3])]
+        f.close()
+    for i in range(0, 5):
+        task_file = 'G:/实习文件夹/google_trace数据集/task_events/part-00' + str(i).zfill(3) + '-of-00500.csv.gz'
+        print(i)
+        with gzip.open(task_file, 'r') as f:
+            for line in f:
+                temp = str(line, encoding='utf-8').replace('\n', '').split(',')
+                task_id = temp[2] + ',' + temp[3]
+                if task_id in submit:
+                    task_id_two = temp[4]
+                    if task_id_two not in result:
+                        result[task_id_two] = [submit[task_id][0], submit[task_id][1]]
+                    else:
+                        result[task_id_two][0] = result[task_id_two][0] + submit[task_id][0]
+                        result[task_id_two][1] = result[task_id_two][1] + submit[task_id][1]
+            f.close()
+    print_cnt(result, 'F:/谷歌数据/machine_ratio_of_submit_fail.txt')'''
+
+'''
+# 第三步：统计在第1天中，task_event前500个文件中属于每个machine_id的ratio of submit/fail
+def print_cnt(dic, path):
+    with open(path, 'w') as f:
+        for key in dic:
+            if dic[key][0] == 0:
+                symbol = 0
+            else:
+                symbol = float(dic[key][1]) / float(dic[key][0])
+            f.write(key + ',' + str(symbol) + '\n')
+        f.close()
+
+
+if __name__ == '__main__':
+    submit, result = {}, {}
+    with open('F:/谷歌数据/new_12.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            task_id = temp[0] + ',' + temp[1]
+            if task_id not in submit:
+                submit[task_id] = [int(temp[2]), int(temp[3])]
+        f.close()
+    for i in range(0, 500):
+        task_file = 'G:/实习文件夹/google_trace数据集/task_events/part-00' + str(i).zfill(3) + '-of-00500.csv.gz'
+        print(i)
+        with gzip.open(task_file, 'r') as f:
+            for line in f:
+                temp = str(line, encoding='utf-8').replace('\n', '').split(',')
+                task_id = temp[2] + ',' + temp[3]
+                if task_id == '':
+                    continue
+                if task_id in submit:
+                    task_id_two = temp[4]
+                    if task_id_two not in result:
+                        result[task_id_two] = [submit[task_id][0], submit[task_id][1]]
+                    else:
+                        result[task_id_two][0] = result[task_id_two][0] + submit[task_id][0]
+                        result[task_id_two][1] = result[task_id_two][1] + submit[task_id][1]
+            f.close()
+    print_cnt(result, 'F:/谷歌数据/machine_ratio_of_submit_fail_第十二天.txt')'''
+
+'''
+# 第四步：验证machine_ratio_of_submit_fail_第一天.txt文件中machine_id的唯一性
+if __name__ == '__main__':
+    submit = {}
+    number = 0
+    with open('F:/谷歌数据/machine_ratio_of_submit_fail_第一天.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            task_id = temp[0]
+            if task_id not in submit:
+                submit[task_id] = 1
+            else:
+                submit[task_id] += 1
+        f.close()
+    for key in submit:
+        if submit[key] > 1:
+            number += 1
+    print(number)'''
+
+'''
+# 第五步：统计machine_ratio_of_submit_fail_第一天.txt文件中ratio of fail/submit 大于1的部分
+if __name__ == '__main__':
+    number = 0
+    with open('F:/谷歌数据/machine_ratio_of_submit_fail_第一天.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            if float(temp[1]) > 1:
+                number += 1
+        f.close()
+    print(number)'''
+
+'''
+# 第六步：从task_event表中获取12583个machine_id，并写入到文件中
+def print_cnt(dic, path):
+    with open(path, 'w') as f:
+        for key in dic:
+            f.write(key + '\n')
+        f.close()
+
+
+if __name__ == '__main__':
+    submit, result = {}, {}
+    for i in range(0, 500):
+        task_file = 'G:/实习文件夹/google_trace数据集/task_events/part-00' + str(i).zfill(3) + '-of-00500.csv.gz'
+        print(i)
+        with gzip.open(task_file, 'r') as f:
+            for line in f:
+                temp = str(line, encoding='utf-8').replace('\n', '').split(',')
+                task_id = temp[4]
+                time = int(temp[0])
+                if task_id == '':
+                    continue
+                if time >=0 and time <2505600000000:
+                    if task_id not in submit:
+                        submit[task_id] = 1
+        f.close()
+    print_cnt(submit, 'F:/谷歌数据/machine_id.txt')'''
+
+'''
+#第七步：构造每一天的12585个机器的ratio of submit/fail
+def print_cnt(dic, path):
+    with open(path, 'w') as f:
+        for key in dic:
+            f.write(key + ',' + str(dic[key]) + '\n')
+        f.close()
+
+
+if __name__ == '__main__':
+    submit, result, boss = {}, {}, {}
+    with open('F:/谷歌数据/machine_id.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            machine_id = temp[0]
+            submit[machine_id] = 1
+        f.close()
+    print(len(submit))
+    with open('F:/谷歌数据/machine_ratio_of_submit_fail_第二十九天.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            machine_id = temp[0]
+            result[machine_id] = float(temp[1])
+        f.close()
+    for key in submit:
+        if key not in result:
+            boss[key] = 0
+        else:
+            boss[key] = result[key]
+    print_cnt(boss, 'F:/谷歌数据/construct_第二十九天.txt')'''
+
+'''
+# 第八步：对machine_id进行排序，并得出排序后的每个machine_id的ratio信息
+from collections import OrderedDict
+
+
+def print_cnt(dic, path):
+    with open(path, 'w') as f:
+        for key in dic:
+            f.write(key + ',' + str(dic[key]) + '\n')
+        f.close()
+
+
+if __name__ == '__main__':
+    submit, result, medium, finish = {}, {}, {}, {}
+    number = 0
+    with open('F:/谷歌数据/machine_id.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            machine_id = temp[0]
+            submit[machine_id] = 1
+        f.close()
+    result = OrderedDict(sorted(submit.items(), key=lambda d: int(d[0])))
+    with open('F:/谷歌数据/construct_第二十九天.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            machine_id = temp[0]
+            if machine_id == '':
+                number += 1
+                continue
+            if machine_id not in medium:
+                medium[machine_id] = float(temp[1])
+        f.close()
+    for key in result:
+        if key in medium:
+            finish[key] = medium[key]
+        else:
+            finish[key] = 0
+    print_cnt(finish, 'E:/谷歌数据/machine_ratio_29.txt')
+    print(number)'''
+
+'''
+# 第九步：绘制测试验证图形
+import numpy as np
+import matplotlib.pyplot as plt
+
+y = np.random.standard_normal((12585, 2))
+c = np.random.randint(0, 1, len(y))
+plt.scatter(y[:, 0], y[:, 1], c=c, marker='o')
+plt.colorbar()
+plt.show()'''
+
+'''
+# 第十步：统计每一天ratio大于0.5个数
+if __name__ == '__main__':
+    for i in range(1, 30):
+        number = 0
+        file_name = 'E:/谷歌数据/machine_ratio_' + str(i) + '.txt'
+        with open(file_name, 'r') as f:
+            for line in f:
+                temp = line.replace('\n', '').split(',')
+                a = float(temp[1])
+                if a > 0.9:
+                    number += 1
+            f.close()
+        print(number)'''
+
+'''
+# 第十一步：读取文件构建数组，并绘制图形
+import numpy as np
+import matplotlib.pyplot as plt
+
+if __name__ == '__main__':
+    k = 0
+    y = np.random.standard_normal((364965, 2))  # 赋ratio（364965=12585*29）
+    z = np.random.standard_normal((364965, 2))  # 赋天数和machine_id
+    for i in range(0, 29):
+        file_name = 'E:/谷歌数据/machine_ratio_' + str(i + 1) + '.txt'
+        count = 0
+        with open(file_name, 'r') as f:
+            for line in f:
+                temp = line.replace('\n', '').split(',')
+                count += 1
+                y[k][0] = 1  # 该值是谁并不重要
+                y[k][1] = float(temp[1])
+                z[k][0] = i + 1  # 横坐标表示天数
+                z[k][1] = count  # 纵坐标表示第几个machine_id(从0开始编号)
+                k += 1
+            f.close()
+    c = y[:, 1]
+    plt.scatter(z[:, 0], z[:, 1], c=c, s=10, marker='.', cmap='Greens')
+    plt.colorbar()
+    plt.show()'''
+
