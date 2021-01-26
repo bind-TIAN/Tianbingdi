@@ -1,0 +1,66 @@
+'''
+def print_cnt(dic, path):
+    with open(path, 'w') as f:
+        for key in dic:
+            f.write(key + ',' + str(dic[key]) + '\n')
+        f.close()
+
+
+if __name__ == '__main__':
+    submit = {}
+    for i in range(0, 500):
+        task_file = 'G:/实习文件夹/google_trace数据集/task_events/part-00' + str(i).zfill(3) + '-of-00500.csv.gz'
+        print(i)
+        with gzip.open(task_file, 'r') as f:
+            for line in f:
+                temp = str(line, encoding='utf-8').replace('\n', '').split(',')
+                if temp[0] == '0':
+                    continue
+                task_id = temp[2] + ',' + temp[3] + ',' + temp[8]
+                if task_id not in submit:
+                    submit[task_id] = 1
+                else:
+                    submit[task_id] += 1
+            f.close()
+    print_cnt(submit, 'F:/谷歌数据/check_pro_1.txt')'''
+
+'''
+from collections import OrderedDict
+
+
+def print_cnt(dic, path):
+    with open(path, 'w') as f:
+        for key in dic:
+            f.write(key + ',' + str(dic[key]).replace('[','').replace(']','').replace(' ','') + '\n')
+        f.close()
+
+
+if __name__ == '__main__':
+    file_name = 'F:/谷歌数据/check_pro_1.txt'
+    submit, result = {}, {}
+    with open(file_name, 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            task_id = temp[0]
+            submit[task_id] = [int(temp[1]), int(temp[2]), int(temp[3])]
+        f.close()
+    result = OrderedDict(sorted(submit.items(), key=lambda d: int(d[0])))
+
+    print_cnt(result, 'F:/谷歌数据/check_pro_2.txt')'''
+'''
+if __name__ == '__main__':
+    number = 0
+    submit = {}
+    with open('F:/谷歌数据/check_pro_2.txt', 'r') as f:
+        for line in f:
+            temp = line.replace('\n', '').split(',')
+            task_id = temp[0] + ',' + temp[1]
+            if task_id not in submit:
+                submit[task_id] = 1
+            else:
+                submit[task_id] += 1
+        f.close()
+    for key in submit:
+        if submit[key] > 1:
+            number += 1
+    print(number)'''
