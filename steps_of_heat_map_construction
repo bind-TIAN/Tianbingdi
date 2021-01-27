@@ -272,7 +272,9 @@ if __name__ == '__main__':
 # 第十一步：读取文件构建数组，并绘制图形
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
+#os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2"
 if __name__ == '__main__':
     k = 0
     y = np.random.standard_normal((364965, 2))  # 赋ratio（364965=12585*29）
@@ -292,6 +294,9 @@ if __name__ == '__main__':
             f.close()
     c = y[:, 1]
     plt.scatter(z[:, 0], z[:, 1], c=c, s=10, marker='.', cmap='Greens')
+    plt.xlabel('Days')
+    plt.ylabel('Number_of_machine')
     plt.colorbar()
-    plt.show()'''
+    plt.show()
+'''
 
